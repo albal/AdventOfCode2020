@@ -1,6 +1,6 @@
 import re
 
-with open('test14_2.txt', 'r') as file:
+with open('input14.txt', 'r') as file:
     data = file.read().strip().split('\n')
 
 addresses = {}
@@ -23,11 +23,9 @@ for line in data:
         mask = line.split('=')[1].strip()
     if line.startswith("mem"):
         location, value = re.findall(r"mem\[(\d+)\] = (\d+)", line)[0]
-        bin_value = bin(int(value))
+        bin_value = bin(int(location))
         val = "0" * (len(mask) - len(bin_value) + 2) + bin_value[2:]
         new_mask = ""
-        print("Mask:    ", mask)
-        print("Location:", location)
         for count, bit in enumerate(val):
             if mask[count] == '1':
                 bit = "1"
@@ -35,11 +33,8 @@ for line in data:
                 bit = "X"
             new_mask += bit
 
-        print("New: ", new_mask)
-
         for m in split(new_mask):
-            print(m)
-            addresses[int(m, 2)] = int(value, 2)
+            addresses[int(m, 2)] = int(value)
 
 print(sum(addresses.values()))
 
